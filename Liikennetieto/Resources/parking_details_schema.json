@@ -1,0 +1,34 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		
+		"timestamp" :
+		{
+			"description": "Timestamp for this information formatted as dd.MM.YYYY HH:mm:ss",
+			"type": "string" 
+		},
+		"name" :
+		{
+			"description": "Name for this parkingstation",
+			"type": "string" 
+		},
+		"address" :
+		{
+			"description": "Address for this parkingstation",
+			"type": "string"  
+		},
+		"freespace" :
+		{
+			"description": "Amount of free parking space for this parkingstation",
+			"type": "integer" 
+		},
+		"totalspace" :
+		{
+			"description": "Amount of total parking space for this parkingstation",
+			"type": "integer"  
+		}									
+	},
+	"required": ["timestamp", "name", "address"]
+}
+
