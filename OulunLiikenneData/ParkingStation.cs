@@ -6,7 +6,7 @@
 //
 //    Generated with https://quicktype.io/
 //
-namespace Liikennetieto
+namespace OulunLiikenneData
 {
     using System.Collections.Generic;
     using Newtonsoft.Json;

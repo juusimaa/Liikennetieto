@@ -77,19 +77,25 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MapViews\MapView.xaml">
+    <Page Include="ParkingStationViews\MapView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ParkingStationViews\ParkingStationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindowModel.cs" />
-    <Compile Include="MapViews\MapView.xaml.cs">
+    <Compile Include="ParkingStationViews\MapView.xaml.cs">
       <DependentUpon>MapView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MapViews\MapViewModel.cs" />
-    <Compile Include="ParkingDetail.cs" />
-    <Compile Include="ParkingStation.cs" />
+    <Compile Include="ParkingStationViews\MapViewModel.cs" />
+    <Compile Include="ParkingStationViews\ParkingStationView.xaml.cs">
+      <DependentUpon>ParkingStationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ParkingStationViews\ParkingStationViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -112,15 +118,18 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Resources\parkingstations_schema.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\parking_details_schema.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OulunLiikenneData\OulunLiikenneData.csproj">
+      <Project>{f0f98268-9497-492b-9bfd-8c14414ada7d}</Project>
+      <Name>OulunLiikenneData</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PedestrianViews\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

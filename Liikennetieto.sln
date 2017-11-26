@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liikennetieto", "Liikennetieto\Liikennetieto.csproj", "{1FE106B1-3C16-41B3-BA8C-5BAC01AC7117}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OulunLiikenneData", "OulunLiikenneData\OulunLiikenneData.csproj", "{F0F98268-9497-492B-9BFD-8C14414ADA7D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{1FE106B1-3C16-41B3-BA8C-5BAC01AC7117}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FE106B1-3C16-41B3-BA8C-5BAC01AC7117}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FE106B1-3C16-41B3-BA8C-5BAC01AC7117}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0F98268-9497-492B-9BFD-8C14414ADA7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0F98268-9497-492B-9BFD-8C14414ADA7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0F98268-9497-492B-9BFD-8C14414ADA7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0F98268-9497-492B-9BFD-8C14414ADA7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,8 +1,9 @@
 ﻿using Microsoft.Maps.MapControl.WPF;
+using OulunLiikenneData;
 using System;
 using System.Globalization;
 
-namespace Liikennetieto.MapViews
+namespace Liikennetieto.ParkingStationViews
 {
     internal sealed class MapViewModel : BindingBase
     {
