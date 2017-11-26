@@ -13,10 +13,12 @@ namespace Liikennetieto
     internal sealed class MainWindowModel : BindingBase
     {
         private const string detailsQuery = "https://www.oulunliikenne.fi/public_traffic_api/parking/parking_details.php?parkingid=";
+        private TimeSpan _cacheTimeout = TimeSpan.FromHours(1.0);
 
         private ParkingStation _selectedStation;
         private string _stationDetail;
         private ObjectCache _cache;
+        private DateTime _startTime;
         private CacheItemPolicy _policy;
 
         public ObservableCollection<ParkingStation> Stations { get; set; }
@@ -46,7 +48,7 @@ namespace Liikennetieto
         {
             _policy = new CacheItemPolicy();
             _cache = MemoryCache.Default;
-
+            _startTime = DateTime.Now;
 
             Stations = new ObservableCollection<ParkingStation>();
             MapViewModel = new MapViewModel();
@@ -70,6 +72,15 @@ namespace Liikennetieto
 
         private void DownloadDetail(int stationId)
         {
+            if (DateTime.Now - _startTime > _cacheTimeout)
+            {
+                foreach (var element in MemoryCache.Default)
+                {
+                    MemoryCache.Default.Remove(element.Key);
+                }
+                _startTime = DateTime.Now;
+            }
+
             var cachedDetails = _cache[$"detail{stationId}"] as ParkingDetail;
 
             if (cachedDetails == null)
