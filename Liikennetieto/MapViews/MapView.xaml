@@ -27,7 +27,8 @@
                         <Run Text="{Binding CurrentParkingDetails.Totalspace, Mode=OneWay}"/>
                         <Run Text=" free ("/>
                         <Run Text="{Binding FreeSpacePercent, Mode=OneWay}"/>
-                        <Run Text=" %)"/>
+                        <Run Text=" % used)"/><LineBreak/>
+                        <Run Text="{Binding CurrentParkingDetails.Timestamp, Mode=OneWay}"/>
                     </TextBlock>
                 </Border>
                 <Path Data="M 0,0 L 0,0,0,80" StrokeThickness="2" Stroke="Black"/>
