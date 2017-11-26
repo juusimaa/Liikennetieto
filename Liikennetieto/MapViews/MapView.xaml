@@ -19,7 +19,7 @@
               m:MapLayer.Position="{Binding MapCenterCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
               m:MapLayer.PositionOrigin="BottomLeft" Opacity="0.7">
                 <Border BorderThickness="0" Background="Black">
-                    <TextBlock FontSize="10" Foreground="White" Margin="5" TextAlignment="Left">
+                    <TextBlock FontSize="14" Foreground="White" Margin="5" TextAlignment="Left">
                         <Run Text="{Binding CurrentParkingStation.Name, Mode=OneWay}"/><LineBreak/>
                         <Run Text="{Binding CurrentParkingDetails.Address, Mode=OneWay}"/><LineBreak/>   
                         <Run Text="{Binding CurrentParkingDetails.Freespace, Mode=OneWay}"/>

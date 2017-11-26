@@ -3,14 +3,12 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
+using System.Runtime.Caching;
 
 namespace Liikennetieto
 {
     /* TODO:
      *  - async download
-     *  - cache data
-     *  - get a life
-     * 
      * */
     internal sealed class MainWindowModel : BindingBase
     {
@@ -18,6 +16,8 @@ namespace Liikennetieto
 
         private ParkingStation _selectedStation;
         private string _stationDetail;
+        private ObjectCache _cache;
+        private CacheItemPolicy _policy;
 
         public ObservableCollection<ParkingStation> Stations { get; set; }
 
@@ -44,6 +44,10 @@ namespace Liikennetieto
 
         public MainWindowModel()
         {
+            _policy = new CacheItemPolicy();
+            _cache = MemoryCache.Default;
+
+
             Stations = new ObservableCollection<ParkingStation>();
             MapViewModel = new MapViewModel();
             DownloadStations();
@@ -66,17 +70,20 @@ namespace Liikennetieto
 
         private void DownloadDetail(int stationId)
         {
-            var client = new WebClient();
-            var detailsData = client.DownloadString(detailsQuery + stationId);
-            var details = ParkingDetail.FromJson(detailsData);
+            var cachedDetails = _cache[$"detail{stationId}"] as ParkingDetail;
 
-            MapViewModel.CurrentParkingDetails = details;
-
-            StationDetail = 
-                $"Name: {details.Name}{Environment.NewLine}" +
-                $"Address: {details.Address}{Environment.NewLine}" +
-                $"Total space: {details.Totalspace}{Environment.NewLine}" +
-                $"Available space: {details.Freespace}";
+            if (cachedDetails == null)
+            {
+                var client = new WebClient();
+                var detailsData = client.DownloadString(detailsQuery + stationId);
+                var details = ParkingDetail.FromJson(detailsData);
+                MapViewModel.CurrentParkingDetails = details;
+                _cache.Set($"detail{stationId}", details, _policy);
+            }
+            else
+            {
+                MapViewModel.CurrentParkingDetails = cachedDetails;
+            }
         }
     }
 }

@@ -69,7 +69,8 @@ namespace Liikennetieto.MapViews
 
         private int GetFreeSpacePercent()
         {
-            if (double.TryParse(CurrentParkingDetails.Freespace, out double free) && double.TryParse(CurrentParkingDetails.Totalspace, out double total))
+            if (double.TryParse(CurrentParkingDetails.Freespace, out double free) && 
+                double.TryParse(CurrentParkingDetails.Totalspace, out double total))
             {
                 return (int)(free / total * 100);
             }
