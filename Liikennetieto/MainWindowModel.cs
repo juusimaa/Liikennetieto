@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Liikennetieto.MapViews;
+using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
+using System.Linq;
 using System.Net;
-using System.Runtime.CompilerServices;
 
 namespace Liikennetieto
 {
@@ -12,16 +12,14 @@ namespace Liikennetieto
      *  - get a life
      * 
      * */
-    internal sealed class MainWindowModel : INotifyPropertyChanged
+    internal sealed class MainWindowModel : BindingBase
     {
         private const string detailsQuery = "https://www.oulunliikenne.fi/public_traffic_api/parking/parking_details.php?parkingid=";
 
-        private Parkingstation _selectedStation;
+        private ParkingStation _selectedStation;
         private string _stationDetail;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public ObservableCollection<Parkingstation> Stations { get; set; }
+        public ObservableCollection<ParkingStation> Stations { get; set; }
 
         public string StationDetail
         {
@@ -33,27 +31,32 @@ namespace Liikennetieto
             }
         }
 
-        public Parkingstation SelectedStation {
+        public ParkingStation SelectedStation {
             get { return _selectedStation; }
             set
             {
                 _selectedStation = value;
                 NotifyPropertyChanged(nameof(SelectedStation));
                 DownloadDetail(Convert.ToInt32(value.Id));
+                MapViewModel.CurrentParkingStation = value;
             }
         }
 
         public MainWindowModel()
         {
-            Stations = new ObservableCollection<Parkingstation>();
+            Stations = new ObservableCollection<ParkingStation>();
+            MapViewModel = new MapViewModel();
             DownloadStations();
+            SelectedStation = Stations.FirstOrDefault(s => s.Name.Contains("Kivisydän"));
         }
+
+        public MapViewModel MapViewModel { get; set; }
 
         private void DownloadStations()
         {
             var client = new WebClient();
             var stationsData = client.DownloadString("https://www.oulunliikenne.fi/public_traffic_api/parking/parkingstations.php");
-            var s = ParkingStation.FromJson(stationsData).Parkingstations;
+            var s = ParkingStations.FromJson(stationsData).ParkingStationList.OrderBy(n => n.Name);
 
             foreach (var station in s)
             {
@@ -67,16 +70,13 @@ namespace Liikennetieto
             var detailsData = client.DownloadString(detailsQuery + stationId);
             var details = ParkingDetail.FromJson(detailsData);
 
+            MapViewModel.CurrentParkingDetails = details;
+
             StationDetail = 
                 $"Name: {details.Name}{Environment.NewLine}" +
                 $"Address: {details.Address}{Environment.NewLine}" +
                 $"Total space: {details.Totalspace}{Environment.NewLine}" +
                 $"Available space: {details.Freespace}";
-        }
-
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

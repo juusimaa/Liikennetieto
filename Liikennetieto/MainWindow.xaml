@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Liikennetieto"
+        xmlns:mapviews="clr-namespace:Liikennetieto.MapViews"
         mc:Ignorable="d"
         x:Name="This"
         Title="Liikennetieto" Height="350" Width="525"
@@ -24,7 +25,7 @@
         <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Stations}" DisplayMemberPath="Name" 
                   SelectedItem="{Binding SelectedStation}" Margin="5" FontSize="14"/>
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding StationDetail}" Margin="10" FontSize="14"/>
+        <mapviews:MapView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" DataContext="{Binding MapViewModel}"/>    
 
     </Grid>
 </Window>

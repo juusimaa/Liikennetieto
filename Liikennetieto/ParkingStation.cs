@@ -11,13 +11,13 @@ namespace Liikennetieto
     using System.Collections.Generic;
     using Newtonsoft.Json;
 
-    public partial class ParkingStation
+    public partial class ParkingStations
     {
         [JsonProperty("parkingstation")]
-        public List<Parkingstation> Parkingstations { get; set; }
+        public List<ParkingStation> ParkingStationList { get; set; }
     }
 
-    public partial class Parkingstation
+    public partial class ParkingStation
     {
         [JsonProperty("geom")]
         public string Geom { get; set; }
@@ -29,14 +29,14 @@ namespace Liikennetieto
         public string Name { get; set; }
     }
 
-    public partial class ParkingStation
+    public partial class ParkingStations
     {
-        public static ParkingStation FromJson(string json) => JsonConvert.DeserializeObject<ParkingStation>(json, ParkingStationConverter.Settings);
+        public static ParkingStations FromJson(string json) => JsonConvert.DeserializeObject<ParkingStations>(json, ParkingStationConverter.Settings);
     }
 
     public static class ParkingStationSerialize
     {
-        public static string ToJson(this ParkingStation self) => JsonConvert.SerializeObject(self, ParkingStationConverter.Settings);
+        public static string ToJson(this ParkingStations self) => JsonConvert.SerializeObject(self, ParkingStationConverter.Settings);
     }
 
     public class ParkingStationConverter
