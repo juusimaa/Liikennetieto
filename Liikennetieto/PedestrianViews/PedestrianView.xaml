@@ -4,11 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Liikennetieto.PedestrianViews"
-             xmlns:parkingstationviews="clr-namespace:Liikennetieto.ParkingStationViews"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
+             d:DesignHeight="300" d:DesignWidth="600"
              d:DataContext="{d:DesignInstance {x:Type local:PedestrianViewModel}}">
 
-    <local:MapView DataContext="{Binding MapViewModel}"/>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
 
+        <local:MapView Grid.Column="0" DataContext="{Binding MapViewModel}"/>
+
+        <TextBlock Grid.Column="1" Margin="5">
+            <Run Text="Selected measurement station" FontSize="20" FontWeight="Bold"/><LineBreak/>
+            <Run Text="Name: "/>
+            <Run Text="{Binding SelectedStation.Station.Name}"/><LineBreak/>
+            <Run Text="Location: "/>
+            <Run Text="{Binding SelectedStation.Location}"/><LineBreak/>
+            <Run Text="Type: "/>
+            <Run Text="{Binding SelectedStation.Station.Type}"/><LineBreak/>
+            <Run Text="Date and time: "/>
+            <Run Text="{Binding SelectedStation.Details.ResultTitle}"/><LineBreak/>
+        </TextBlock>
+        
+    </Grid>
+    
 </UserControl>

@@ -14,6 +14,7 @@ namespace Liikennetieto.PedestrianViews
         private const string _detailsQuery = "http://www.oulunliikenne.fi/public_traffic_api/eco_traffic/eco_counter_daydata.php?measurementPointId={0}&daysFromHistory={1}";
 
         private MapViewModel _mapViewModel;
+        private PedestrianStationWithDetails _selectedStation;
 
         public PedestrianViewModel()
         {
@@ -22,6 +23,16 @@ namespace Liikennetieto.PedestrianViews
         }
 
         public ObservableCollection<PedestrianStationWithDetails> Stations { get; set; }
+
+        public PedestrianStationWithDetails SelectedStation
+        {
+            get { return _selectedStation; }
+            set
+            {
+                _selectedStation = value;
+                NotifyPropertyChanged(nameof(SelectedStation));
+            }
+        }
 
         public MapViewModel MapViewModel
         {
@@ -48,9 +59,14 @@ namespace Liikennetieto.PedestrianViews
                 }
 
                 MapViewModel = new MapViewModel(Stations.ToList());
+                MapViewModel.PushPinClicked += MapViewModel_PushPinClicked;
             });
         }
 
+        private void MapViewModel_PushPinClicked(object sender, PedestrianStationWithDetails e)
+        {
+            SelectedStation = e;
+        }
 
         private async Task<EcoStationDetail> DownloadDetail(int id)
         {

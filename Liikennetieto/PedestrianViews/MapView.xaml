@@ -5,20 +5,23 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
              xmlns:local="clr-namespace:Liikennetieto.PedestrianViews"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              mc:Ignorable="d" 
+             x:Name="This"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance {x:Type local:MapViewModel}}">
 
     <UserControl.Resources>
         <ControlTemplate x:Key="PushpinControlTemplate" TargetType="m:Pushpin">
-            <Border BorderThickness="0" Background="Black" Opacity="0.7">
-                <TextBlock FontSize="14" Foreground="White" Margin="5" TextAlignment="Left">
-                    <Run Text="{Binding Station.Name, Mode=OneWay}"/><LineBreak/>
-                    <Run Text="{Binding Station.Type, Mode=OneWay}"/><LineBreak/>   
-                    <Run Text="{Binding Station.DirectionName, Mode=OneWay}"/><LineBreak/>
-                    <Run Text="{Binding Details.YearMaxValue, Mode=OneWay}"/>
+            <Canvas Width="50" Height="80" 
+              m:MapLayer.Position="47.620574,-122.34942" 
+              m:MapLayer.PositionOrigin="BottomCenter" Opacity="0.7">
+                <Path Data="M 0,0 L 50,0 50,50 25,80 0,50 0,0" Fill="Red" Stroke="Wheat" StrokeThickness="2" />
+                <TextBlock FontSize="15" Foreground="White" Margin="5" TextAlignment="Center">
+                    <Run Text="   "></Run>
+                    <Run Text="{Binding Station.Id, Mode=OneWay}"/><LineBreak />
                 </TextBlock>
-            </Border>
+            </Canvas>
         </ControlTemplate>
     </UserControl.Resources>
 
@@ -31,8 +34,14 @@
             <m:MapItemsControl ItemsSource="{Binding StationDetails}">
                 <m:MapItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <m:Pushpin Location="{Binding Path=Location}"
-                                   Template="{StaticResource PushpinControlTemplate}" Height="85" Width="Auto"/>
+                        <m:Pushpin Location="{Binding Path=Location}"                                 
+                                   Template="{StaticResource PushpinControlTemplate}" Height="85" Width="Auto">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseLeftButtonDown">
+                                    <i:InvokeCommandAction Command="{Binding ElementName=This, Path=DataContext.PushPinCommand}" CommandParameter="{Binding}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </m:Pushpin>
                     </DataTemplate>
                 </m:MapItemsControl.ItemTemplate>
             </m:MapItemsControl>

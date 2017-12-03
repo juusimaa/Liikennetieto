@@ -1,5 +1,6 @@
 ﻿using Liikennetieto.ParkingStationViews;
 using Liikennetieto.PedestrianViews;
+using Utility.Wpf;
 
 namespace Liikennetieto
 {
@@ -7,7 +8,7 @@ namespace Liikennetieto
     {
         public ParkingStationViewModel ParkingViewModel { get; set; }
 
-        public PedestrianViews.PedestrianViewModel PedestrianViewModel { get; set; }
+        public PedestrianViewModel PedestrianViewModel { get; set; }
 
         public MainWindowModel()
         {

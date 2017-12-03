@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Liikennetieto
+namespace Utility.Wpf
 {
-    internal abstract class BindingBase : INotifyPropertyChanged
+    public abstract class BindingBase : INotifyPropertyChanged
     {
         public virtual event PropertyChangedEventHandler PropertyChanged;
 

@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using Microsoft.Maps.MapControl.WPF;
+using Utility.Wpf;
 
 namespace Liikennetieto.PedestrianViews
 {
@@ -10,6 +13,8 @@ namespace Liikennetieto.PedestrianViews
     {
         private Location _mapCenterCoordinate;
         private Visibility _waitLabelVisibility;
+
+        public event EventHandler<PedestrianStationWithDetails> PushPinClicked;
 
         public ObservableCollection<PedestrianStationWithDetails> StationDetails { get; private set; }
 
@@ -38,6 +43,13 @@ namespace Liikennetieto.PedestrianViews
                 _mapCenterCoordinate = value;
                 NotifyPropertyChanged(nameof(MapCenterCoordinate));
             }
+        }
+
+        public ICommand PushPinCommand => new RelayCommand(OnPusnPinClicked);
+
+        public void OnPusnPinClicked(object d)
+        {
+            PushPinClicked?.Invoke(this, d as PedestrianStationWithDetails);
         }
     }
 }

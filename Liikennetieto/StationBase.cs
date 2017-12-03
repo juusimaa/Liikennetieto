@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Caching;
+using Utility.Wpf;
 
 namespace Liikennetieto
 {
