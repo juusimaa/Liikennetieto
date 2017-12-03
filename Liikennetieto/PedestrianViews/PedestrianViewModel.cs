@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Runtime.Caching;
+using System.Threading.Tasks;
 using OulunLiikenneData;
 
 namespace Liikennetieto.PedestrianViews
@@ -12,31 +13,46 @@ namespace Liikennetieto.PedestrianViews
         private const string _stationsQuery = "http://www.oulunliikenne.fi/public_traffic_api/eco_traffic/eco_counters.php";
         private const string _detailsQuery = "http://www.oulunliikenne.fi/public_traffic_api/eco_traffic/eco_counter_daydata.php?measurementPointId={0}&daysFromHistory={1}";
 
+        private MapViewModel _mapViewModel;
+
         public PedestrianViewModel()
         {
             Stations = new ObservableCollection<PedestrianStationWithDetails>();
-            DownloadStations();
-            MapViewModel = new MapViewModel(Stations.ToList());
+            DownloadStations();            
         }
 
         public ObservableCollection<PedestrianStationWithDetails> Stations { get; set; }
 
-        public MapViewModel MapViewModel { get; set; }
-
-        private void DownloadStations()
+        public MapViewModel MapViewModel
         {
-            var client = new WebClient();
-            var stationsData = client.DownloadString(_stationsQuery);
-            var s = EcoCounterStations.FromJson(stationsData).EcoStations.OrderBy(n => n.Name);
-
-            foreach (var station in s)
+            get { return _mapViewModel; }
+            set
             {
-                var details = DownloadDetail(Convert.ToInt32(station.Id));
-                Stations.Add(new PedestrianStationWithDetails { Details = details, Station = station });
+                _mapViewModel = value;
+                NotifyPropertyChanged(nameof(MapViewModel));
             }
         }
 
-        private EcoStationDetail DownloadDetail(int id)
+        private void DownloadStations()
+        {
+            Task.Run(async () =>
+            {
+                var client = new WebClient();
+                var data = await client.DownloadStringTaskAsync(_stationsQuery);
+                var stations = EcoCounterStations.FromJson(data).EcoStations.OrderBy(n => n.Name);
+
+                foreach (var station in stations)
+                {
+                    var details = await DownloadDetail(Convert.ToInt32(station.Id));
+                    Stations.Add(new PedestrianStationWithDetails { Details = details, Station = station });
+                }
+
+                MapViewModel = new MapViewModel(Stations.ToList());
+            });
+        }
+
+
+        private async Task<EcoStationDetail> DownloadDetail(int id)
         {
             if (DateTime.Now - startTime > cacheTimeout)
             {
@@ -53,8 +69,9 @@ namespace Liikennetieto.PedestrianViews
             }
 
             var client = new WebClient();
-            var detailsData = client.DownloadString(string.Format(_detailsQuery, id, 7));
-            var details = EcoStationDetail.FromJson(detailsData);
+            var data = await client.DownloadStringTaskAsync(string.Format(_detailsQuery, id, 7));
+
+            var details = EcoStationDetail.FromJson(data);
             cache.Set($"detail{id}", details, policy);
             return details;
         }        

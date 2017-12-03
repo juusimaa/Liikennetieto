@@ -23,9 +23,11 @@
     </UserControl.Resources>
 
     <Grid>
+        <Label Content="Loading data, please wait..." FontSize="40" Visibility="{Binding WaitLabelVisibility, Mode=OneWay}"
+               Grid.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <m:Map CredentialsProvider="AufOl1WojtgMmtxxkNUzvPagabGcGO9KV2BOxVUdWNeIbQAXjFKI6si5JXxWiVXJ" 
                Center="{Binding MapCenterCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-               ZoomLevel="16">
+               ZoomLevel="10">
             <m:MapItemsControl ItemsSource="{Binding StationDetails}">
                 <m:MapItemsControl.ItemTemplate>
                     <DataTemplate>
