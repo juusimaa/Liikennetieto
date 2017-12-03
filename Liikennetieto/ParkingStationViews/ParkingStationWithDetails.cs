@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace Liikennetieto.ParkingStationViews
 {
-    internal class ParkingStationWithDetails : BindingBase
+    internal class ParkingStationWithDetails
     {
         private ParkingStation _station;
         private ParkingDetail _details;
@@ -16,13 +16,11 @@ namespace Liikennetieto.ParkingStationViews
             set
             {
                 _details = value;
-                FreeSpace = GetFreeSpacePercent(value);
-                NotifyPropertyChanged(nameof(Details));
-                NotifyPropertyChanged(nameof(FreeSpace));
+                FreeSpacePercent = GetFreeSpacePercent(value);
             }
         }
 
-        public int FreeSpace { get; set; }
+        public int FreeSpacePercent { get; set; }
 
         public ParkingStation Station
         {

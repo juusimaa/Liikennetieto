@@ -20,7 +20,7 @@
                         <Run Text=" / "/>
                         <Run Text="{Binding Details.Totalspace, Mode=OneWay}"/>
                         <Run Text=" free ("/>
-                        <Run Text="{Binding Details.Freespace, Mode=OneWay}"/>
+                        <Run Text="{Binding FreeSpacePercent, Mode=OneWay}"/>
                         <Run Text=" % used)"/><LineBreak/>
                         <Run Text="{Binding Details.Timestamp, Mode=OneWay}"/>
                     </TextBlock>
@@ -36,7 +36,7 @@
                 <m:MapItemsControl.ItemTemplate>
                     <DataTemplate>
                         <m:Pushpin Location="{Binding Path=Location}"
-                                   Template="{StaticResource PushpinControlTemplate}" Height="80" Width="Auto"/>
+                                   Template="{StaticResource PushpinControlTemplate}" Height="85" Width="Auto"/>
                     </DataTemplate>
                 </m:MapItemsControl.ItemTemplate>
             </m:MapItemsControl>
