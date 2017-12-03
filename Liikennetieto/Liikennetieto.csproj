@@ -85,6 +85,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PedestrianViews\PedestrianView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindowModel.cs" />
@@ -96,6 +100,11 @@
       <DependentUpon>ParkingStationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ParkingStationViews\ParkingStationViewModel.cs" />
+    <Compile Include="ParkingStationViews\ParkingStationWithDetails.cs" />
+    <Compile Include="PedestrianViews\PedestrianView.xaml.cs">
+      <DependentUpon>PedestrianView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PedestrianViews\PedestrianViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -128,8 +137,6 @@
       <Name>OulunLiikenneData</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PedestrianViews\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

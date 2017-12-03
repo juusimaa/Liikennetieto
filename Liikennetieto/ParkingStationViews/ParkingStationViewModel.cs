@@ -12,13 +12,11 @@ namespace Liikennetieto.ParkingStationViews
         private const string detailsQuery = "https://www.oulunliikenne.fi/public_traffic_api/parking/parking_details.php?parkingid=";
         private TimeSpan _cacheTimeout = TimeSpan.FromHours(1.0);
 
-        private ParkingStation _selectedStation;
-        private string _stationDetail;
         private ObjectCache _cache;
         private DateTime _startTime;
         private CacheItemPolicy _policy;
 
-        public ObservableCollection<ParkingStation> Stations { get; set; }
+        public ObservableCollection<ParkingStationWithDetails> Stations { get; set; }
 
         public ParkingStationViewModel()
         {
@@ -26,32 +24,11 @@ namespace Liikennetieto.ParkingStationViews
             _cache = MemoryCache.Default;
             _startTime = DateTime.Now;
 
-            Stations = new ObservableCollection<ParkingStation>();
-            MapViewModel = new MapViewModel();
+            Stations = new ObservableCollection<ParkingStationWithDetails>();
+
             DownloadStations();
-            SelectedStation = Stations.FirstOrDefault(s => s.Name.Contains("Kivisydän"));
-        }
 
-        public string StationDetail
-        {
-            get { return _stationDetail; }
-            set
-            {
-                _stationDetail = value;
-                NotifyPropertyChanged(nameof(StationDetail));
-            }
-        }
-
-        public ParkingStation SelectedStation
-        {
-            get { return _selectedStation; }
-            set
-            {
-                _selectedStation = value;
-                NotifyPropertyChanged(nameof(SelectedStation));
-                DownloadDetail(Convert.ToInt32(value.Id));
-                MapViewModel.CurrentParkingStation = value;
-            }
+            MapViewModel = new MapViewModel(Stations.ToList());
         }
 
         public MapViewModel MapViewModel { get; set; }
@@ -64,11 +41,12 @@ namespace Liikennetieto.ParkingStationViews
 
             foreach (var station in s)
             {
-                Stations.Add(station);
+                var details = DownloadDetail(Convert.ToInt32(station.Id));
+                Stations.Add(new ParkingStationWithDetails { Details = details, Station = station});
             }
         }
 
-        private void DownloadDetail(int stationId)
+        private ParkingDetail DownloadDetail(int stationId)
         {
             if (DateTime.Now - _startTime > _cacheTimeout)
             {
@@ -78,21 +56,17 @@ namespace Liikennetieto.ParkingStationViews
                 }
                 _startTime = DateTime.Now;
             }
-
-            var cachedDetails = _cache[$"detail{stationId}"] as ParkingDetail;
-
-            if (cachedDetails == null)
+            
+            if (_cache[$"detail{stationId}"] is ParkingDetail cachedDetails)
             {
-                var client = new WebClient();
-                var detailsData = client.DownloadString(detailsQuery + stationId);
-                var details = ParkingDetail.FromJson(detailsData);
-                MapViewModel.CurrentParkingDetails = details;
-                _cache.Set($"detail{stationId}", details, _policy);
+                return cachedDetails;
             }
-            else
-            {
-                MapViewModel.CurrentParkingDetails = cachedDetails;
-            }
+
+            var client = new WebClient();
+            var detailsData = client.DownloadString(detailsQuery + stationId);
+            var details = ParkingDetail.FromJson(detailsData);
+            _cache.Set($"detail{stationId}", details, _policy);
+            return details;
         }
     }
 }

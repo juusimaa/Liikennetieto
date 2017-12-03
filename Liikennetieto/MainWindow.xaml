@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Liikennetieto"
         xmlns:parkingstationviews="clr-namespace:Liikennetieto.ParkingStationViews"
+        xmlns:pedestrianviews="clr-namespace:Liikennetieto.PedestrianViews"
         mc:Ignorable="d"
         x:Name="This"
         Title="Liikennetieto" WindowState="Maximized"
@@ -14,7 +15,9 @@
         <TabItem Header="Parking">
             <parkingstationviews:ParkingStationView DataContext="{Binding ParkingViewModel}"/>
         </TabItem>
-        <TabItem Header="Pedestrian"/>
+        <TabItem Header="Pedestrian">
+            <pedestrianviews:PedestrianView DataContext="{Binding PedestrianViewModel}"/>
+        </TabItem>
     </TabControl>   
 
 </Window>
