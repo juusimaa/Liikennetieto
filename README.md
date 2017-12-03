@@ -6,6 +6,7 @@ Simple WPF application based on free data from [Oulunliikenne.fi](http://wp.oulu
 
 * [Newtonsoft.Json](https://www.newtonsoft.com/json) - Json parsing
 * [Microsoft.Maps.MapControl.WPF](https://msdn.microsoft.com/en-us/library/hh750210.aspx) - Bing maps
+* [System.Windows.Interactivity.WPF](https://www.nuget.org/packages/System.Windows.Interactivity.WPF/) - Behavior API (Trigger, Action and Behavior)
 
 ## License
 
