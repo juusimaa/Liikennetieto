@@ -8,6 +8,6 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance {x:Type local:ParkingStationViewModel}}">
     
-    <local:MapView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" DataContext="{Binding MapViewModel}"/>
+    <local:MapView DataContext="{Binding MapViewModel}"/>
 
 </UserControl>

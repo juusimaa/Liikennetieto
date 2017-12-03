@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="Liikennetieto.PedestrianViews.MapView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+             xmlns:local="clr-namespace:Liikennetieto.PedestrianViews"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance {x:Type local:MapViewModel}}">
+
+    <UserControl.Resources>
+        <ControlTemplate x:Key="PushpinControlTemplate" TargetType="m:Pushpin">
+            <Border BorderThickness="0" Background="Black" Opacity="0.7">
+                <TextBlock FontSize="14" Foreground="White" Margin="5" TextAlignment="Left">
+                    <Run Text="{Binding Station.Name, Mode=OneWay}"/><LineBreak/>
+                    <Run Text="{Binding Station.Type, Mode=OneWay}"/><LineBreak/>   
+                    <Run Text="{Binding Station.DirectionName, Mode=OneWay}"/><LineBreak/>
+                    <Run Text="{Binding Details.YearMaxValue, Mode=OneWay}"/>
+                </TextBlock>
+            </Border>
+        </ControlTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <m:Map CredentialsProvider="AufOl1WojtgMmtxxkNUzvPagabGcGO9KV2BOxVUdWNeIbQAXjFKI6si5JXxWiVXJ" 
+               Center="{Binding MapCenterCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+               ZoomLevel="16">
+            <m:MapItemsControl ItemsSource="{Binding StationDetails}">
+                <m:MapItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <m:Pushpin Location="{Binding Path=Location}"
+                                   Template="{StaticResource PushpinControlTemplate}" Height="85" Width="Auto"/>
+                    </DataTemplate>
+                </m:MapItemsControl.ItemTemplate>
+            </m:MapItemsControl>
+        </m:Map>
+    </Grid>
+</UserControl>

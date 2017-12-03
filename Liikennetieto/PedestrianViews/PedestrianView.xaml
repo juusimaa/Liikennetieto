@@ -9,6 +9,6 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance {x:Type local:PedestrianViewModel}}">
 
-    <parkingstationviews:MapView DataContext="{Binding PedestrianViewModel}"/>
+    <local:MapView DataContext="{Binding MapViewModel}"/>
 
 </UserControl>

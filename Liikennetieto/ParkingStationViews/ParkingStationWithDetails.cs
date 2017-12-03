@@ -1,7 +1,6 @@
 ﻿using Microsoft.Maps.MapControl.WPF;
 using OulunLiikenneData;
-using System;
-using System.Globalization;
+using Liikennetieto.ExtensionMethods;
 
 namespace Liikennetieto.ParkingStationViews
 {
@@ -28,31 +27,11 @@ namespace Liikennetieto.ParkingStationViews
             set
             {
                 _station = value;
-                Location = GetCoordinate(value.Geom);
+                Location = value.Geom.GetCoordinate();
             }
         }
 
         public Location Location { get; set; }
-
-        private Location GetCoordinate(string c)
-        {
-            try
-            {
-                var str = c.Substring(c.IndexOf('[') + 1, c.LastIndexOf(']') - c.IndexOf('[') - 1).Split(',');
-
-                if (double.TryParse(str[0], NumberStyles.Any, CultureInfo.InvariantCulture, out double lat) &&
-                    double.TryParse(str[1], NumberStyles.Any, CultureInfo.InvariantCulture, out double lon))
-                {
-                    return new Location(lon, lat);
-                }
-
-                return null;
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                return null;
-            }
-        }
 
         private int GetFreeSpacePercent(ParkingDetail d)
         {

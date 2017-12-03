@@ -7,23 +7,15 @@ using System.Runtime.Caching;
 
 namespace Liikennetieto.ParkingStationViews
 {
-    internal sealed class ParkingStationViewModel : BindingBase
+    internal sealed class ParkingStationViewModel : StationBase
     {
-        private const string detailsQuery = "https://www.oulunliikenne.fi/public_traffic_api/parking/parking_details.php?parkingid=";
-        private TimeSpan _cacheTimeout = TimeSpan.FromHours(1.0);
-
-        private ObjectCache _cache;
-        private DateTime _startTime;
-        private CacheItemPolicy _policy;
-
+        private const string _detailsQuery = "https://www.oulunliikenne.fi/public_traffic_api/parking/parking_details.php?parkingid=";
+        private const string _stationsQuery = "https://www.oulunliikenne.fi/public_traffic_api/parking/parkingstations.php";
+        
         public ObservableCollection<ParkingStationWithDetails> Stations { get; set; }
 
         public ParkingStationViewModel()
         {
-            _policy = new CacheItemPolicy();
-            _cache = MemoryCache.Default;
-            _startTime = DateTime.Now;
-
             Stations = new ObservableCollection<ParkingStationWithDetails>();
 
             DownloadStations();
@@ -36,7 +28,7 @@ namespace Liikennetieto.ParkingStationViews
         private void DownloadStations()
         {
             var client = new WebClient();
-            var stationsData = client.DownloadString("https://www.oulunliikenne.fi/public_traffic_api/parking/parkingstations.php");
+            var stationsData = client.DownloadString(_stationsQuery);
             var s = ParkingStations.FromJson(stationsData).ParkingStationList.OrderBy(n => n.Name);
 
             foreach (var station in s)
@@ -48,24 +40,24 @@ namespace Liikennetieto.ParkingStationViews
 
         private ParkingDetail DownloadDetail(int stationId)
         {
-            if (DateTime.Now - _startTime > _cacheTimeout)
+            if (DateTime.Now - startTime > cacheTimeout)
             {
                 foreach (var element in MemoryCache.Default)
                 {
                     MemoryCache.Default.Remove(element.Key);
                 }
-                _startTime = DateTime.Now;
+                startTime = DateTime.Now;
             }
             
-            if (_cache[$"detail{stationId}"] is ParkingDetail cachedDetails)
+            if (cache[$"detail{stationId}"] is ParkingDetail cachedDetails)
             {
                 return cachedDetails;
             }
 
             var client = new WebClient();
-            var detailsData = client.DownloadString(detailsQuery + stationId);
+            var detailsData = client.DownloadString(_detailsQuery + stationId);
             var details = ParkingDetail.FromJson(detailsData);
-            _cache.Set($"detail{stationId}", details, _policy);
+            cache.Set($"detail{stationId}", details, policy);
             return details;
         }
     }

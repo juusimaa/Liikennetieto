@@ -64,6 +64,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="PedestrianViews\MapView.xaml.cs">
+      <DependentUpon>MapView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PedestrianViews\MapViewModel.cs" />
+    <Compile Include="StationBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -73,6 +78,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BindingBase.cs" />
+    <Compile Include="ExtensionMethods\ExtensionMethods.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -82,6 +88,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ParkingStationViews\ParkingStationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PedestrianViews\MapView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -101,6 +111,7 @@
     </Compile>
     <Compile Include="ParkingStationViews\ParkingStationViewModel.cs" />
     <Compile Include="ParkingStationViews\ParkingStationWithDetails.cs" />
+    <Compile Include="PedestrianViews\PedestrianStationWithDetails.cs" />
     <Compile Include="PedestrianViews\PedestrianView.xaml.cs">
       <DependentUpon>PedestrianView.xaml</DependentUpon>
     </Compile>

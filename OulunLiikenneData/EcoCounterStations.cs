@@ -13,10 +13,10 @@ namespace OulunLiikenneData
     public partial class EcoCounterStations
     {
         [JsonProperty("ecostation")]
-        public List<Ecostation> Ecostation { get; set; }
+        public List<EcoStation> EcoStations { get; set; }
     }
 
-    public partial class Ecostation
+    public partial class EcoStation
     {
         [JsonProperty("direction_name")]
         public string DirectionName { get; set; }
@@ -36,15 +36,15 @@ namespace OulunLiikenneData
 
     public partial class EcoCounterStations
     {
-        public static EcoCounterStations FromJson(string json) => JsonConvert.DeserializeObject<EcoCounterStations>(json, Converter.Settings);
+        public static EcoCounterStations FromJson(string json) => JsonConvert.DeserializeObject<EcoCounterStations>(json, EcoStationConverter.Settings);
     }
 
-    public static class Serialize
+    public static class EcoStationSerialize
     {
-        public static string ToJson(this EcoCounterStations self) => JsonConvert.SerializeObject(self, Converter.Settings);
+        public static string ToJson(this EcoCounterStations self) => JsonConvert.SerializeObject(self, EcoStationConverter.Settings);
     }
 
-    public class Converter
+    public class EcoStationConverter
     {
         public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
         {
