@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Runtime.Caching;
@@ -81,8 +82,11 @@ namespace Liikennetieto.PedestrianViews
 
             if (cache[$"detail{id}"] is EcoStationDetail cachedDetails)
             {
+                Trace.WriteLine($"Eco station {id} found from cache");
                 return cachedDetails;
             }
+
+            Trace.WriteLine($"Eco station {id} not found from cache, downloading details");
 
             var client = new WebClient();
             var data = await client.DownloadStringTaskAsync(string.Format(_detailsQuery, id, 7));
